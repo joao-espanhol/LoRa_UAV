@@ -1,29 +1,58 @@
 #include <LoRa.h>
 #include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-/* Definições para comunicação com rádio LoRa */
+/* Definições para LoRa */
 #define SCK_LORA        5
 #define MISO_LORA       19
 #define MOSI_LORA       27
 #define RESET_PIN_LORA  14
 #define SS_PIN_LORA     18
-#define DIO0_PIN_LORA   26  // Corrigido
+#define DIO0_PIN_LORA   26
 
 #define HIGH_GAIN_LORA  20
 #define BAND            915E6
 
+/* Definições do OLED */
+#define OLED_SDA_PIN    4
+#define OLED_SCL_PIN    15
+#define SCREEN_WIDTH    128
+#define SCREEN_HEIGHT   64
+#define OLED_ADDR       0x3C
+#define OLED_RESET      16
+
+#define OLED_LINE1      0
+#define OLED_LINE2      10
+#define OLED_LINE3      20
+
 #define DEBUG_SERIAL_BAUDRATE 115200
 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+/* Variável global */
 long informacao_a_ser_enviada = 0;
 
-bool init_comunicacao_lora(void) {
+void display_init() {
+    if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR)) {
+        Serial.println("[LoRa Sender] Falha ao inicializar OLED");
+    } else {
+        Serial.println("[LoRa Sender] OLED OK");
+        display.clearDisplay();
+        display.setTextSize(1);
+        display.setTextColor(WHITE);
+    }
+}
+
+bool init_comunicacao_lora() {
     bool status_init = false;
-    Serial.println("[LoRa Sender] Tentando iniciar comunicacao com o radio LoRa...");
+    Serial.println("[LoRa Sender] Tentando iniciar LoRa...");
     SPI.begin(SCK_LORA, MISO_LORA, MOSI_LORA, SS_PIN_LORA);
     LoRa.setPins(SS_PIN_LORA, RESET_PIN_LORA, DIO0_PIN_LORA);
 
     if (!LoRa.begin(BAND)) {
-        Serial.println("[LoRa Sender] Falhou. Nova tentativa em 1 segundo...");
+        Serial.println("[LoRa Sender] Falhou. Tentando novamente...");
         delay(1000);
     } else {
         LoRa.setTxPower(HIGH_GAIN_LORA);
@@ -38,17 +67,35 @@ void setup() {
     Serial.begin(DEBUG_SERIAL_BAUDRATE);
     while (!Serial);
 
+    Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);
+    display_init();
+
+    display.clearDisplay();
+    display.setCursor(0, OLED_LINE1);
+    display.print("Iniciando...");
+    display.display();
+
     while (!init_comunicacao_lora());
 }
 
 void loop() {
+    /* Envia a informação via LoRa */
     LoRa.beginPacket();
     LoRa.write((unsigned char *)&informacao_a_ser_enviada, sizeof(informacao_a_ser_enviada));
     LoRa.endPacket();
 
-    Serial.print("[LoRa Sender] Enviado: ");
+    Serial.print("[LoRa Sender] Enviando: ");
     Serial.println(informacao_a_ser_enviada);
 
+    /* Mostra no OLED */
+    display.clearDisplay();
+    display.setCursor(0, OLED_LINE1);
+    display.print("Enviando...");
+    display.setCursor(0, OLED_LINE2);
+    display.print("Info: ");
+    display.print(informacao_a_ser_enviada);  // Use print() em vez de println() para controle mais preciso
+    display.display();
+
     informacao_a_ser_enviada++;
-    delay(1000);
+    delay(1000); // Adicione um delay para evitar atualizações excessivas
 }
