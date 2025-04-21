@@ -99,8 +99,5 @@ void loop() {
 
         Serial.print("[LoRa Receiver] Info recebida: ");
         Serial.println(informacao_recebida);
-    } else {
-        Serial.println("[LoRa Receiver] Nenhum pacote ou tamanho errado");
-        delay(1000);
     }
 }
