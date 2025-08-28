@@ -2,24 +2,34 @@ import socket
 import math
 import re
 import csv
+import os
 
 
 HOST = '0.0.0.0'
 PORT = 5000
 
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371000  # raio da Terra em metros
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-    d_phi = math.radians(lat2 - lat1)
-    d_lambda = math.radians(lon2 - lon1)
+# def haversine(lat1, lon1, lat2, lon2):
+#     R = 6371000  # raio da Terra em metros
+#     phi1 = math.radians(lat1)
+#     phi2 = math.radians(lat2)
+#     d_phi = math.radians(lat2 - lat1)
+#     d_lambda = math.radians(lon2 - lon1)
 
-    a = math.sin(d_phi / 2.0) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2.0) ** 2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    return R * c
+#     a = math.sin(d_phi / 2.0) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2.0) ** 2
+#     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+#     return R * c
 
-lat_list = []
-lon_list = []
+# lat_list = []
+# lon_list = []
+
+# abrir arquivo CSV em modo append
+
+csvfile = open("dados_validos.csv", "a", newline='')
+csv_writer = csv.writer(csvfile)
+
+# abrir o log de erros
+errfile = open("pacotes_invalidos.log", "a")
+
 
 print(f"[*] Aguardando conexão na porta {PORT}...")
 
@@ -48,7 +58,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
 
                     pattern = r"\[(.*?)\]"
                     matches = re.findall(pattern, line)
-                    if len(matches) >= 6:
+                    if len(matches) >= 8:
                         try:
                             data_dict = {
                                 "id_pack": int(line.split("[")[0]),
@@ -58,13 +68,33 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                                 "hdop": float(matches[3]),
                                 "alt": float(matches[4]),
                                 "time": matches[5],
-                                "rssi": int(line.split("RSSI:")[1].strip())
+                                "receptor_id": matches[6],
+                                "rssi": int(matches[7]),
                             }
+                            csv_writer.writerow([
+                                    data_dict["id_pack"],
+                                    data_dict["device"],
+                                    data_dict["lat"],
+                                    data_dict["lon"],
+                                    data_dict["hdop"],
+                                    data_dict["alt"],
+                                    data_dict["time"],
+                                    data_dict["receptor_id"],
+                                    data_dict["rssi"]
+                            ])
+                            csvfile.flush()
                             print(f"[VALIDO] {data_dict}")
+
                         except Exception as e:
                             print(f"[ERRO ao converter dados]: '{line.strip()}' — {e}")
+                            errfile.write(f"{line.strip()} — {e}\n")
+                            errfile.flush()
+
                     else:
                         print(f"[ERRO] Pacote inválido: '{line.strip()}'")
+                        errfile.write(f"{line.strip()} — Campos insuficientes\n")
+                        errfile.flush()
+
 
             except Exception as e:
                 print(f"[ERRO] Decodificação: {e}")

@@ -14,6 +14,8 @@ SSD1306Wire display(0x3c, SDA_OLED, SCL_OLED);
 // #define GPS_RX   32
 // #define GPS_TX   33
 
+#define RECEPTOR_ID "DRONE"
+
 const char* ssid = "wifi";        // <<<<< nome da rede
 const char* password = "Rondon@157";    // <<<<< senha da rede
 const char* server_ip = "172.20.10.2";       // <<<<< IP do seu computador (confirme qual é o IP do seu comp)
@@ -139,8 +141,10 @@ void connectServer() {
 // }
 
 void sendTCP(const String& msg, const int rssi) {
+  String packet = String(msg) + "[" + RECEPTOR_ID + "]" + "[" + String(rssi) + "]";
+
   if (client.connected()) {
-    client.print(msg + " RSSI: " + rssi);
+    client.print(packet);
   } else {
     Serial.println(F("[ERRO] TCP desconectado."));
     logOLED("[ERRO] TCP desconectado. Iniciando reconexão...");
