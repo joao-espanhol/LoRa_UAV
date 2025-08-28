@@ -111,6 +111,66 @@ void updateFakeGPS() {
   }
 }
 
+float chanceErro = 0.4; // 40% de chance de corromper o pacote
+bool pacoteCorrompido = false;
+
+String corromperPacote(const String &msgOriginal) {
+  String msg = msgOriginal;
+  pacoteCorrompido = false; // reset a cada chamada
+
+  if ((random(0, 1000) / 1000.0) < chanceErro) {
+    pacoteCorrompido = true;
+
+    int tipo = random(0, 5); // diferentes modos de corrupção
+    switch(tipo) {
+      case 0: // Remove grande parte do pacote
+        if (msg.length() > 10) {
+          int start = random(0, msg.length()/2);
+          int len = random(5, msg.length()/2);
+          msg.remove(start, len);
+        }
+        break;
+      case 1: // Embaralha blocos
+        {
+          int cut1 = random(0, msg.length()/2);
+          int cut2 = random(cut1, msg.length());
+          String block = msg.substring(cut1, cut2);
+          msg.remove(cut1, cut2 - cut1);
+          int insertPos = random(0, msg.length());
+          msg = msg.substring(0, insertPos) + block + msg.substring(insertPos);
+        }
+        break;
+      case 2: // Troca números e letras aleatórios
+        for (int i = 0; i < msg.length(); i++) {
+          if (random(0,2)==0) {
+            if (isDigit(msg[i])) msg[i] = '0' + random(0,10);
+            else if (isAlpha(msg[i])) msg[i] = 'A' + random(0,26);
+          }
+        }
+        break;
+      case 3: // Insere caracteres não imprimíveis
+        for (int i = 0; i < random(1,5); i++) {
+          int pos = random(0, msg.length());
+          char c = (char)random(1,32); // ASCII control
+          msg = msg.substring(0,pos) + c + msg.substring(pos);
+        }
+        break;
+      case 4: // Duplicar trechos
+        if (msg.length() > 5) {
+          int start = random(0, msg.length()/2);
+          int len = random(2, msg.length()/2);
+          String dup = msg.substring(start, start+len);
+          int insertPos = random(0, msg.length());
+          msg = msg.substring(0, insertPos) + dup + msg.substring(insertPos);
+        }
+        break;
+    }
+    Serial.println(F("[FAKE GPS] Pacote fortemente corrompido para teste!"));
+  }
+
+  return msg;
+}
+
 bool fakeGPSisValid() {
   return true; // Sempre válido no modo simulado
 }
@@ -285,15 +345,20 @@ void loop() {
                  String(fakeGPS.minute) + ":" +
                  String(fakeGPS.second) + "]";
 
+    String msgToSend = corromperPacote(msg);
     LoRa.beginPacket();
-    LoRa.print(msg);
+    LoRa.print(msgToSend);
     LoRa.endPacket();
 
     String result = "[LoRa] pacote enviado \nLat: " + String(lat, 6) +
                     "\nLon: " + String(lon, 6) +
                     "\nSinal: " + String(fakeGPS.hdop, 1);
+
+    if (pacoteCorrompido) {
+      result += "\nPacote corrompido!";
+    }
     logOLED(result);
-    Serial.println("Enviado (FAKE): " + msg);
+    Serial.println("Enviado (FAKE): " + msgToSend);
 
     delay(3000);
     }
