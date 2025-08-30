@@ -38,7 +38,7 @@ struct FakeGPS {
 } fakeGPS;
 
 // Mudar para false quando não estiver usando o FakeGPS!
-bool useFakeGPS = true;
+bool useFakeGPS = false;
 
 unsigned long lastFakeUpdate = 0;
 unsigned long lastTurn = 0;
@@ -112,7 +112,7 @@ void updateFakeGPS() {
 }
 
 float chanceErro = 0.4; // 40% de chance de corromper o pacote
-bool pacoteCorrompido = false;
+bool pacoteCorrompido = true;
 
 String corromperPacote(const String &msgOriginal) {
   String msg = msgOriginal;
@@ -291,7 +291,7 @@ void loop() {
       // Envia via LoRa
       float lat = gps.location.lat();
       float lon = gps.location.lng();
-      msg += "[" + String(lat) + "][" + String(lon) + "]";
+      msg += "[" + String(lat, 6) + "][" + String(lon, 6) + "]";
 
       float sinal = 0.0;
       if (gps.hdop.isValid()) {

@@ -155,7 +155,7 @@ def parse_linha(campos):
     except Exception as e:
         return None, str(e)
 
-arquivo_csv = "dados_validos.csv"
+arquivo_csv = "Testes30AGO.csv"
 
 offset = 0
 buffer_validas = []
