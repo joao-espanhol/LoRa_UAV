@@ -1,22 +1,5 @@
 
 Enviado: 131[IFSPC@MPINAS][-22.873102][-47.111774][0.86][648.7][18:13:50]
-ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0030,len:1448
-load:0x40078000,len:14844
-ho 0 tail 12 room 4
-load:0x40080400,len:4
-load:0x40080404,len:3356
-entry 0x4008059c
-E (168) esp_corVW}͡ Core dump data check failed:
-Calculated checksum='9d56f9c2'
-Image checksum='ffffffff'
-[TAREFA] Iniciando LoRa...
-[OK] LoRa iniciado.
 
 ==============================
 [ERRO] Localização do GPS inválida - Aguarde calibração
@@ -218,28 +201,9 @@ Enviado: 96[IFSPC@MPINAS][-22.874935][-47.103226][0.75][648.0][18:23:22]
 
 Enviado: 97[IFSPC@MPINAS][-22.875137][-47.103416][2.12][672.1][18:23:28]
 
-ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0030,len:1448
-load:0x40078000,len:14844
-ho 0 tail 12 room 4
-load:0x40080400,len:4
-load:0x40080404,len:3356
-entry 0x4008059c
-E (168) esp_corVW}͡ Core dump data check failed:
-Calculated checksum='9d56f9c2'
-Image checksum='ffffffff'
-[TAREFA] Iniciando LoRa...
-[OK] LoRa iniciado.
-
 ==============================
 [ERRO] Localização do GPS inválida - Aguarde calibração
 ==============================
-
 
 Enviado: 0[IFSPC@MPINAS][-22.874954][-47.103260][0.75][635.6][18:24:44]
 
@@ -427,28 +391,9 @@ Enviado: 91[IFSPC@MPINAS][-22.878393][-47.093288][0.83][654.0][18:33:24]
 
 Enviado: 92[IFSPC@MPINAS][-22.878426][-47.093227][0.83][655.7][18:33:34]
 
-ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0030,len:1448
-load:0x40078000,len:14844
-ho 0 tail 12 room 4
-load:0x40080400,len:4
-load:0x40080404,len:3356
-entry 0x4008059c
-E (168) esp_corVW}͡ Core dump data check failed:
-Calculated checksum='9d56f9c2'
-Image checksum='ffffffff'
-[TAREFA] Iniciando LoRa...
-[OK] LoRa iniciado.
-
 ==============================
 [ERRO] Localização do GPS inválida - Aguarde calibração
 ==============================
-
 
 Enviado: 0[IFSPC@MPINAS][-22.878433][-47.093227][0.83][654.3][18:34:22]
 
@@ -639,23 +584,6 @@ Enviado: 92[IFSPC@MPINAS][-22.883160][-47.084480][0.82][683.9][18:43:8]
 Enviado: 93[IFSPC@MPINAS][-22.883158][-47.084484][0.82][683.9][18:43:13]
 
 Enviado: 94[IFSPC@MPINAS][-22.883152][-47.084492][0.82][684.8][18:43:19]
-ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0030,len:1448
-load:0x40078000,len:14844
-ho 0 tail 12 room 4
-load:0x40080400,len:4
-load:0x40080404,len:3356
-entry 0x4008059c
-E (168) esp_corVW}͡ Core dump data check failed:
-Calculated checksum='9d56f9c2'
-Image checksum='ffffffff'
-[TAREFA] Iniciando LoRa...
-[OK] LoRa iniciado.
 
 ==============================
 [ERRO] Localização do GPS inválida - Aguarde calibração
@@ -873,23 +801,9 @@ Enviado: 104[IFSPC@MPINAS][-22.890007][-47.076122][1.75][657.9][18:55:29]
 
 Enviado: 105[IFSPC@MPINAS][-22.889929][-47.075974][1.75][657.9][18:55:35]
 
-ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0030,len:1448
-load:0x40078000,len:14844
-ho 0 tail 12 room 4
-load:0x40080400,len:4
-load:0x40080404,len:3356
-entry 0x4008059c
-E (168) esp_corVW}͡ Core dump data check failed:
-Calculated checksum='9d56f9c2'
-Image checksum='ffffffff'
-[TAREFA] Iniciando LoRa...
-[OK] LoRa iniciado.
+==============================
+[ERRO] Localização do GPS inválida - Aguarde calibração
+==============================
 
 Enviado: 0[IFSPC@MPINAS][-22.889866][-47.075905][0.80][722.1][18:55:53]
 
@@ -1164,23 +1078,6 @@ Enviado: 134[IFSPC@MPINAS][-22.896584][-47.071369][0.75][687.0][19:8:34]
 Enviado: 135[IFSPC@MPINAS][-22.896584][-47.071369][0.75][687.0][19:8:40]
 
 Enviado: 136[IFSPC@MPINAS][-22.896584][-47.071369][0.75][686.7][19:8:45]
-ets Jun  8 2016 00:22:57
-
-rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0030,len:1448
-load:0x40078000,len:14844
-ho 0 tail 12 room 4
-load:0x40080400,len:4
-load:0x40080404,len:3356
-entry 0x4008059c
-E (168) esp_corVW}͡ Core dump data check failed:
-Calculated checksum='9d56f9c2'
-Image checksum='ffffffff'
-[TAREFA] Iniciando LoRa...
-[OK] LoRa iniciado.
 
 ==============================
 [ERRO] Localização do GPS inválida - Aguarde calibração
