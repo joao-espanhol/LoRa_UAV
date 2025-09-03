@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfólio Profissional</title>
+  <meta name="description" content="Portfólio pessoal com estética corporativa profissional (inspirado no estilo Toledo do Brasil)." />
+  <style>
+    /*
+      Estilo geral inspirado no ar profissional/corporativo do site da Toledo do Brasil:
+      - Paleta em azuis (marinho + azul médio) com cinzas neutros e muito branco.
+      - Tipografia limpa, alto contraste, cards, grids e CTAs sólidos.
+      - Layout responsivo com bastante espaçamento e hierarquia clara.
+
+      Observação: as cores abaixo foram estimadas para reproduzir uma estética similar.
+      Ajuste os tokens em :root conforme preferir.
+    */
+
+    :root{
+      /* Paleta (ajustável) */
+      --brand-navy: #0B2C4A;   /* primária escura */
+      --brand-blue: #1462A6;   /* primária média */
+      --brand-blue-70: #2A78B8;/* hover/acento */
+      --brand-light: #E9F2FA;  /* fundos claros */
+      --neutral-900: #0F172A;
+      --neutral-700: #334155;
+      --neutral-500: #64748B;
+      --neutral-300: #CBD5E1;
+      --neutral-200: #E2E8F0;
+      --neutral-100: #F1F5F9;
+      --white: #FFFFFF;
+
+      /* Tokens de UI */
+      --radius: 16px;
+      --radius-sm: 12px;
+      --shadow-sm: 0 2px 10px rgba(2, 6, 23, 0.06);
+      --shadow-md: 0 10px 30px rgba(2, 6, 23, 0.08);
+      --container: 1200px;
+    }
+
+    /* Reset + base tipográfica */
+    *, *::before, *::after{box-sizing: border-box}
+    html{scroll-behavior: smooth}
+    body{
+      margin: 0; color: var(--neutral-900); background: var(--white);
+      font: 400 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    img{max-width: 100%; height: auto; display: block}
+    a{color: inherit; text-decoration: none}
+    .container{max-width: var(--container); margin-inline: auto; padding: 0 24px}
+    .visually-hidden{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+
+    /* Header */
+    header{
+      position: sticky; top: 0; z-index: 50; background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .nav{
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 72px;
+    }
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px}
+    .logo{width:36px; height:36px; border-radius:8px; background: linear-gradient(135deg, var(--brand-navy), var(--brand-blue));}
+    .brand span strong{color: var(--brand-blue)}
+
+    .menu{display:flex; align-items:center; gap: 24px}
+    .menu a{color: var(--neutral-700); font-weight:500}
+    .menu a:hover{color: var(--brand-blue)}
+
+    .cta{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius: 999px;
+      background: var(--brand-blue); color: var(--white); font-weight:600; box-shadow: var(--shadow-sm);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .cta:hover{background: var(--brand-blue-70); transform: translateY(-1px)}
+
+    /* Mobile nav */
+    .burger{display:none; background:none; border:0; padding:10px; border-radius:10px}
+    .burger span{display:block; width:24px; height:2px; background: var(--neutral-700); margin:5px 0}
+    @media (max-width: 900px){
+      .menu{display:none}
+      .burger{display:block}
+      .mobile-panel{display:none; position:fixed; inset:72px 0 0; background: var(--white); box-shadow: var(--shadow-md); padding:24px}
+      .mobile-panel.open{display:block}
+      .mobile-panel a{display:block; padding:14px 8px; color: var(--neutral-700); border-radius:10px}
+      .mobile-panel a:hover{background: var(--neutral-100); color: var(--brand-blue)}
+      .mobile-panel .cta{margin-top:8px; width:100%; justify-content:center}
+    }
+
+    /* Hero */
+    .hero{
+      position: relative; overflow: hidden; isolation: isolate;
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(20,98,166,.15), transparent 60%),
+                  linear-gradient(180deg, var(--white), var(--brand-light));
+      border-bottom: 1px solid var(--neutral-200);
+    }
+    .hero-inner{display:grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center; padding: 64px 0}
+    .hero h1{margin:0 0 12px; font-size: clamp(28px, 4vw, 44px); line-height:1.15; letter-spacing:.3px}
+    .hero p{margin:0 0 24px; color: var(--neutral-700)}
+    .hero-cta{display:flex; gap:12px; flex-wrap: wrap}
+    .btn-outline{border:1px solid var(--neutral-300); padding:12px 16px; border-radius:999px; font-weight:600}
+    .btn-outline:hover{border-color: var(--brand-blue); color: var(--brand-blue)}
+
+    .hero-card{
+      background: var(--white); border:1px solid var(--neutral-200); border-radius: var(--radius);
+      box-shadow: var(--shadow-md); padding: 24px;
+    }
+    .hero-card img{border-radius: var(--radius-sm); background: var(--neutral-100)}
+
+    @media (max-width: 900px){
+      .hero-inner{grid-template-columns: 1fr; gap: 28px; padding: 32px 0}
+    }
+
+    /* Seções */
+    section{padding: 64px 0}
+    .section-head{display:flex; align-items:flex-end; justify-content:space-between; gap: 24px; margin-bottom: 28px}
+    .eyebrow{display:inline-block; font-size:12px; letter-spacing: .12em; text-transform:uppercase; color: var(--brand-blue); font-weight:700}
+    .h2{font-size: clamp(22px, 3.2vw, 32px); margin: 6px 0 0}
+    .muted{color: var(--neutral-700)}
+
+    /* Cards */
+    .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px}
+    .grid-2{display:grid; grid-template-columns: repeat(2, 1fr); gap: 24px}
+    .grid-4{display:grid; grid-template-columns: repeat(4, 1fr); gap: 24px}
+    @media (max-width: 1000px){.grid-4{grid-template-columns: repeat(2, 1fr)}}
+    @media (max-width: 900px){.grid-3{grid-template-columns: 1fr} .grid-2{grid-template-columns: 1fr}}
+
+    .card{
+      border: 1px solid var(--neutral-200); border-radius: var(--radius); background: var(--white);
+      box-shadow: var(--shadow-sm); overflow: hidden; display:flex; flex-direction:column;
+    }
+    .card-media{aspect-ratio: 16/9; background: var(--neutral-100)}
+    .card-body{padding: 18px 18px 20px}
+    .card-title{font-weight:700; margin:0 0 6px}
+    .card-text{color: var(--neutral-700); margin:0}
+
+    /* Destaques/valores */
+    .feature{display:flex; gap:14px; padding:18px; border:1px solid var(--neutral-200); border-radius: var(--radius-sm); align-items:flex-start; background: var(--white)}
+    .feature .icon{width:36px; height:36px; border-radius:10px; background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-70)); box-shadow: var(--shadow-sm)}
+    .feature h3{margin:0 0 4px; font-size: 18px}
+    .feature p{margin:0; color: var(--neutral-700)}
+
+    /* CTA em faixa */
+    .band{
+      background: linear-gradient(135deg, var(--brand-navy), var(--brand-blue)); color: var(--white);
+      border-radius: var(--radius); padding: 32px; display:flex; align-items:center; justify-content:space-between; gap: 16px;
+    }
+    .band .actions{display:flex; gap:12px; flex-wrap:wrap}
+    .band .cta{background: var(--white); color: var(--brand-navy)}
+    .band .cta:hover{background: #F8FAFC}
+
+    /* Footer */
+    footer{border-top:1px solid var(--neutral-200); background: var(--white)}
+    .footer-grid{display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:24px; padding: 48px 0}
+    .footer-brand{max-width: 520px}
+    .footer small{color: var(--neutral-500)}
+    .footer-links a{display:block; padding:6px 0; color: var(--neutral-700)}
+    .footer-links a:hover{color: var(--brand-blue)}
+    @media (max-width: 900px){.footer-grid{grid-template-columns: 1fr 1fr} .footer-brand{grid-column: 1 / -1}}
+
+    /* Utilidades */
+    .sp-2{height: 12px}
+    .sp-4{height: 24px}
+    .sp-6{height: 36px}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Principal">
+      <a class="brand" href="#home">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Seu <strong>Nome</strong></span>
+      </a>
+      <nav class="menu" aria-label="Links primários">
+        <a href="#servicos">Serviços</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#conteudo">Conteúdo</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <a class="cta" href="#contato" role="button">Fale comigo</a>
+      <button class="burger" aria-label="Abrir menu" aria-controls="mobile" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-panel" id="mobile" aria-hidden="true">
+      <div class="container">
+        <a href="#servicos">Serviços</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#conteudo">Conteúdo</a>
+        <a class="cta" href="#contato">Fale comigo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="home" class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="eyebrow">Portfólio Profissional</span>
+        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+        <p class="muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula, sapien ac tempor rhoncus, tellus lorem gravida arcu, ac luctus lorem elit sed risus.</p>
+        <div class="hero-cta">
+          <a class="cta" href="#portfolio">Ver projetos</a>
+          <a class="btn-outline" href="#sobre">Conheça meu trabalho</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Destaque visual">
+        <!-- Imagem de destaque substituída por placeholder com alt sequencial -->
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="imagem1" class="card-media" />
+        <div class="sp-2"></div>
+        <p class="muted" style="margin:0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat efficitur mi, sit amet pulvinar purus.</p>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Serviços / Diferenciais -->
+  <section id="servicos" class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Serviços</span>
+        <h2 class="h2">Soluções que entregam precisão, confiança e inovação</h2>
+      </div>
+      <p class="muted" style="max-width:520px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed sed sem a velit ultricies efficitur.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="feature">
+        <div class="icon" aria-hidden="true"></div>
+        <div>
+          <h3>Consultoria & Estratégia</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="icon" aria-hidden="true"></div>
+        <div>
+          <h3>Design & UX</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="icon" aria-hidden="true"></div>
+        <div>
+          <h3>Desenvolvimento Web</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfólio / Projetos (cards) -->
+  <section id="portfolio" class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Portfólio</span>
+        <h2 class="h2">Projetos em destaque</h2>
+      </div>
+      <a class="btn-outline" href="#">Ver todos</a>
+    </div>
+
+    <div class="grid-3">
+      <!-- Card 1 -->
+      <article class="card">
+        <img class="card-media" alt="imagem2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <h3 class="card-title">Lorem ipsum dolor</h3>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget sapien in nunc finibus.</p>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card">
+        <img class="card-media" alt="imagem3" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <h3 class="card-title">Consectetur adipiscing</h3>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget sapien in nunc finibus.</p>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card">
+        <img class="card-media" alt="imagem4" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <h3 class="card-title">Integer feugiat efficitur</h3>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget sapien in nunc finibus.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Sobre -->
+  <section id="sobre" class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Sobre</span>
+        <h2 class="h2">Experiência que gera resultados</h2>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam dictum vitae purus vel dictum. Duis sit amet tristique odio.</p>
+        <p class="muted">Maecenas a mi vitae justo varius suscipit. Morbi pulvinar, neque et luctus laoreet, orci orci pulvinar purus, a lacinia augue dolor sed lacus.</p>
+      </div>
+      <div class="card" style="padding:18px">
+        <img class="card-media" alt="imagem5" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur scelerisque, sem id interdum ullamcorper, nibh neque euismod arcu, non varius dui felis sed sapien.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conteúdo (Blog/Insights) -->
+  <section id="conteudo" class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Conteúdo</span>
+        <h2 class="h2">Insights & atualizações</h2>
+      </div>
+      <a class="btn-outline" href="#">Assinar newsletter</a>
+    </div>
+
+    <div class="grid-3">
+      <article class="card">
+        <img class="card-media" alt="imagem6" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <h3 class="card-title">Lorem ipsum dolor sit amet</h3>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a bibendum urna.</p>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card-media" alt="imagem7" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <h3 class="card-title">Consectetur adipiscing elit</h3>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a bibendum urna.</p>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card-media" alt="imagem8" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+        <div class="card-body">
+          <h3 class="card-title">Integer feugiat efficitur mi</h3>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a bibendum urna.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA em faixa / Contato -->
+  <section id="contato" class="container">
+    <div class="band">
+      <div>
+        <h2 class="h2" style="margin:0">Pronto para construir algo com qualidade?</h2>
+        <p class="muted" style="margin:8px 0 0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vamos conversar.</p>
+      </div>
+      <div class="actions">
+        <a class="cta" href="mailto:email@exemplo.com">Enviar e-mail</a>
+        <a class="btn-outline" href="#">Baixar CV</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand" style="margin-bottom:12px"><span class="logo"></span><span>Seu <strong>Nome</strong></span></div>
+        <p class="muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae cursus lorem. Fusce pulvinar sapien nec urna fermentum, id convallis augue aliquet.</p>
+      </div>
+      <div class="footer-links">
+        <strong>Site</strong>
+        <a href="#servicos">Serviços</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#sobre">Sobre</a>
+      </div>
+      <div class="footer-links">
+        <strong>Conteúdo</strong>
+        <a href="#conteudo">Blog</a>
+        <a href="#">Podcast</a>
+        <a href="#">Publicações</a>
+      </div>
+      <div class="footer-links">
+        <strong>Contato</strong>
+        <a href="mailto:email@exemplo.com">email@exemplo.com</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">GitHub</a>
+      </div>
+    </div>
+    <div class="container" style="border-top:1px solid var(--neutral-200); padding: 16px 0">
+      <small>© <span id="year"></span> Seu Nome. Todos os direitos reservados.</small>
+    </div>
+  </footer>
+
+  <script>
+    // Ano automático no rodapé
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Menu mobile
+    const burger = document.querySelector('.burger');
+    const panel = document.getElementById('mobile');
+    burger?.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(open));
+      panel.setAttribute('aria-hidden', String(!open));
+    });
+  </script>
+</body>
+</html>
+
