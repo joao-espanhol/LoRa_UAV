@@ -41,7 +41,7 @@ def salvar_kml(dispositivos, arquivo="posicoes.kml"):
         f.write("</kml>\n")
 
 # CSV de entrada
-arquivo_csv = "../dados_validos.csv"
+arquivo_csv = "Testes30AGO copy.csv"
 offset = 0
 
 # Define nomes de colunas manualmente
@@ -71,8 +71,8 @@ while True:
                     dispositivos[device].append((lat, lon, tempo))
 
                     # Mantém apenas últimas 50 posições
-                    if len(dispositivos[device]) > 50:
-                        dispositivos[device].pop(0)
+                    #if len(dispositivos[device]) > 50:
+                    #    dispositivos[device].pop(0)
 
                     novas = True
                 except Exception:
