@@ -1,2 +1,5 @@
 pacotes_invalidos.log
 dados_validos.csv
+*.kml
+*.csv
+*.log
