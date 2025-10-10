@@ -269,7 +269,6 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(F("\n--- RELATÓRIO GPS ---"));
   while (GPSserial.available()) {
     char c = GPSserial.read();
     gps.encode(c);
@@ -333,34 +332,34 @@ void loop() {
       logOLED("[ERRO]", "Localização do GPS inválida", "Aguarde calibração\n" + qsinal);
     } else{
       // usa GPS fake
-    updateFakeGPS();
-    float lat = fakeGPS.lat;
-    float lon = fakeGPS.lon;
+      updateFakeGPS();
+      float lat = fakeGPS.lat;
+      float lon = fakeGPS.lon;
 
-    String msg = String(counter++) + "[IFSPC@MPINAS]";
-    msg += "[" + String(lat, 6) + "][" + String(lon, 6) + "]";
-    msg += "[" + String(fakeGPS.hdop, 1) + "]";
-    msg += "[" + String(fakeGPS.altitude, 1) + "]";
-    msg += "[" + String(fakeGPS.hour) + ":" +
-                 String(fakeGPS.minute) + ":" +
-                 String(fakeGPS.second) + "]";
+      String msg = String(counter++) + "[IFSPC@MPINAS]";
+      msg += "[" + String(lat, 6) + "][" + String(lon, 6) + "]";
+      msg += "[" + String(fakeGPS.hdop, 1) + "]";
+      msg += "[" + String(fakeGPS.altitude, 1) + "]";
+      msg += "[" + String(fakeGPS.hour) + ":" +
+                  String(fakeGPS.minute) + ":" +
+                  String(fakeGPS.second) + "]";
 
-    String msgToSend = corromperPacote(msg);
-    LoRa.beginPacket();
-    LoRa.print(msgToSend);
-    LoRa.endPacket();
+      String msgToSend = corromperPacote(msg);
+      LoRa.beginPacket();
+      LoRa.print(msgToSend);
+      LoRa.endPacket();
 
-    String result = "[LoRa] pacote enviado \nLat: " + String(lat, 6) +
-                    "\nLon: " + String(lon, 6) +
-                    "\nSinal: " + String(fakeGPS.hdop, 1);
+      String result = "[LoRa] pacote enviado \nLat: " + String(lat, 6) +
+                      "\nLon: " + String(lon, 6) +
+                      "\nSinal: " + String(fakeGPS.hdop, 1);
 
-    if (pacoteCorrompido) {
-      result += "\nPacote corrompido!";
-    }
-    logOLED(result);
-    Serial.println("Enviado (FAKE): " + msgToSend);
+      if (pacoteCorrompido) {
+        result += "\nPacote corrompido!";
+      }
+      logOLED(result);
+      Serial.println("Enviado (FAKE): " + msgToSend);
 
-    delay(3000);
+      delay(3000);
     }
   }
 }
