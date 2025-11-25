@@ -41,7 +41,7 @@ def salvar_kml(dispositivos, arquivo="posicoes.kml"):
         f.write("</kml>\n")
 
 # CSV de entrada
-arquivo_csv = "Testes30AGO copy.csv"
+arquivo_csv = "OPAN.csv"
 offset = 0
 
 # Define nomes de colunas manualmente

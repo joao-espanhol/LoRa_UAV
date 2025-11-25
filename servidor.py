@@ -11,18 +11,17 @@ csv_lock = threading.Lock()
 log_lock = threading.Lock()
 
 # abrir arquivo CSV em modo append
-csvfile = open("Testes30AGO.csv", "a", newline='')
+csvfile = open("OPAN.csv", "a", newline='')
 csv_writer = csv.writer(csvfile)
 
 # abrir o log de erros
-errfile = open("Testes30AGO_pacotes.log", "a")
+errfile = open("OPAN_pacotes.log", "a")
 
 # --- Limites geográficos e dispositivo esperado ---
 LAT_MIN, LAT_MAX = -25.5, -19.5
 LON_MIN, LON_MAX = -53.5, -44.0
 ALT_MIN, ALT_MAX = 0, 10000
-EXPECTED_DEVICES = "IFSPC@MPINAS"
-
+EXPECTED_DEVICES = {"ALFA", "BRAVO", "CHARLIE"}
 # --- Função de validação ---
 def validar_linha_server(data_dict):
     try:
@@ -36,7 +35,7 @@ def validar_linha_server(data_dict):
         time_field = data_dict["time"]
         hour, minute, second = map(int, time_field.split(':'))
 
-        if device != EXPECTED_DEVICES:
+        if device not in EXPECTED_DEVICES:
             return False, f"Device inválido: {device}"
         if not (0 <= hour < 24 and 0 <= minute < 60 and 0 <= second < 60):
             return False, "Formato de hora inválido"

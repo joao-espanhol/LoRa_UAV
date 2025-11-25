@@ -14,11 +14,11 @@ SSD1306Wire display(0x3c, SDA_OLED, SCL_OLED);
 // #define GPS_RX   32
 // #define GPS_TX   33
 
-#define RECEPTOR_ID "DRONE"
+#define RECEPTOR_ID "CCOM"
 
-const char* ssid = "wifi";        // <<<<< nome da rede
-const char* password = "Rondon@157";    // <<<<< senha da rede
-const char* server_ip = "172.20.10.2";       // <<<<< IP do seu computador (confirme qual é o IP do seu comp)
+const char* ssid = "CCOM-2025";        // <<<<< nome da rede
+const char* password = "pelcom@1174";    // <<<<< senha da rede
+const char* server_ip = "192.168.0.147";       // <<<<< IP do seu computador (confirme qual é o IP do seu comp)
 const uint16_t server_port = 5000;
 
 // TinyGPSPlus gps;

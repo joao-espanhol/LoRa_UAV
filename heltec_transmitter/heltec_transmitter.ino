@@ -256,7 +256,7 @@ void setup() {
   delay(1500);
   LoRa.setSpreadingFactor(12);
   Serial.println("[OK] LoRa iniciado.");
-  logOLED("[OK]", "LoRa iniciado.", "Aguardando pacotes...");
+  logOLED("[OK]", "LoRa iniciado.", "Aguardando dados de GPS...");
   LoRa.setTxPower(20);
     
   // Inicializa GPS
@@ -285,7 +285,7 @@ void loop() {
 
     if(gps.location.isValid() && !useFakeGPS) {
       // Monta a mensagem LoRa
-      String msg = String(counter++) + "[IFSPC@MPINAS]";
+      String msg = String(counter++) + "[BRAVO]";
 
       // Envia via LoRa
       float lat = gps.location.lat();
@@ -323,7 +323,7 @@ void loop() {
       logOLED(result);
       Serial.println("Enviado: " + msg);
 
-      delay(3000); // Aguarda 3 segundos entre envios
+      delay(8000); // Aguarda 8 segundos entre envios
     }
     else if(!useFakeGPS){
       String qsinal = "Qualidade do sinal: " + String(gps.hdop.hdop());
@@ -359,7 +359,7 @@ void loop() {
       logOLED(result);
       Serial.println("Enviado (FAKE): " + msgToSend);
 
-      delay(3000);
+      delay(10000);
     }
   }
 }
