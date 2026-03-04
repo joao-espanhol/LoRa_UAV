@@ -16,9 +16,9 @@ SSD1306Wire display(0x3c, SDA_OLED, SCL_OLED);
 
 #define RECEPTOR_ID "CCOM"
 
-const char* ssid = "CCOM-2025";        // <<<<< nome da rede
-const char* password = "pelcom@1174";    // <<<<< senha da rede
-const char* server_ip = "192.168.0.147";       // <<<<< IP do seu computador (confirme qual é o IP do seu comp)
+const char* ssid = "CCOM-2025"; // Colocar ssid da Rede WiFi
+const char* password = "Password"; // Colocar Senha da Rede WiFi
+const char* server_ip = "192.168.0.xxx"; // Colocar IP do Computador
 const uint16_t server_port = 5000;
 
 // TinyGPSPlus gps;
