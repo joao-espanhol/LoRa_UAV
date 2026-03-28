@@ -14,12 +14,12 @@ SSD1306Wire display(0x3c, SDA_OLED, SCL_OLED);
 // #define GPS_RX   32
 // #define GPS_TX   33
 
-#define RECEPTOR_ID "CCOM"
+#define RECEPTOR_ID "SOLO"
 
-const char* ssid = "CCOM-2025"; // Colocar ssid da Rede WiFi
-const char* password = "Password"; // Colocar Senha da Rede WiFi
-const char* server_ip = "192.168.0.xxx"; // Colocar IP do Computador
-const uint16_t server_port = 5000;
+const char* ssid = "AVM PAULISTA-2.4G"; // Colocar ssid da Rede WiFi
+const char* password = "*XXXXXXXXXX"; // Colocar Senha da Rede WiFi
+const char* server_ip = "192.168.XXX.XXX"; // Colocar IP do Computador
+const uint16_t server_port = 8001;
 
 // TinyGPSPlus gps;
 // HardwareSerial GPSserial(2);
@@ -144,13 +144,18 @@ void sendTCP(const String& msg, const int rssi) {
   String packet = String(msg) + "[" + RECEPTOR_ID + "]" + "[" + String(rssi) + "]";
 
   if (client.connected()) {
-    client.print(packet);
-  } else {
+    client.println(packet);  
+    } else {
     Serial.println(F("[ERRO] TCP desconectado."));
     logOLED("[ERRO] TCP desconectado. Iniciando reconexão...");
     delay(3000);
     connectServer();
   }
+}
+
+void sendHeartBeat(){
+  String heartBeat = "HEARTBEAT_SOLO";
+  client.println(heartBeat);  
 }
 
 // Função auxiliar para extrair valores entre colchetes
@@ -176,8 +181,15 @@ String getValue(String data, int index) {
   }
 }
 
+unsigned long lastHeartbeat = 0;
+unsigned long heartbeatInterval = 5000;
+
 void loop() {
   //Tratando pacotes LoRa
+    if (millis() - lastHeartbeat > heartbeatInterval) {
+    sendHeartBeat();
+    lastHeartbeat = millis();
+  }
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
     String msg = "";

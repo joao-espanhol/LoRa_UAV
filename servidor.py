@@ -2,20 +2,26 @@ import socket
 import re
 import csv
 import threading
+import time
+
+last_heartbeat = {}   # device -> timestamp
+device_conn = {}      # device -> socket
+
+HEARTBEAT_TIMEOUT = 10  # segundos
 
 HOST = '0.0.0.0'
-PORT = 5000
+PORT = 8001
 
 # Locks para evitar escrita simultânea corromper arquivos
 csv_lock = threading.Lock()
 log_lock = threading.Lock()
 
 # abrir arquivo CSV em modo append
-csvfile = open("OPAN.csv", "a", newline='')
+csvfile = open("t28MAR_00.csv", "a", newline='')
 csv_writer = csv.writer(csvfile)
 
 # abrir o log de erros
-errfile = open("OPAN_pacotes.log", "a")
+errfile = open("e28MAR_00.log", "a")
 
 # --- Limites geográficos e dispositivo esperado ---
 LAT_MIN, LAT_MAX = -25.5, -19.5
@@ -62,6 +68,7 @@ def validar_linha_server(data_dict):
 
 def process_client(conn, addr):
     print(f"[+] Conectado por {addr}")
+    buffer = ""
     with conn:
         while True:
             try:
@@ -69,13 +76,36 @@ def process_client(conn, addr):
                 if not data:
                     break
 
-                text = data.decode('utf-8', errors='ignore')
-                lines = text.splitlines()
-                print(f"[{addr}] Recebido: {text.strip()}")
 
-                for line in lines:
+                buffer += data.decode('utf-8', errors='ignore')
+
+                while '\n' in buffer:
+                    line, buffer = buffer.split('\n', 1)
+                    line = line.strip()
+
+                    if not line:
+                        continue
+
+                    print(f"[{addr}] Recebido: {line}")
+
+                    # =========================
+                    # HEARTBEAT
+                    # =========================
+                    if line.startswith("HEARTBEAT_"):
+                        device = line.replace("HEARTBEAT_", "").strip()
+
+                        last_heartbeat[device] = time.time()
+                        device_conn[device] = conn
+
+                        print(f"[HEARTBEAT] {device} OK ({addr})")
+                        continue
+
+                    # =========================
+                    # PARSER NORMAL
+                    # =========================
                     pattern = r"\[(.*?)\]"
                     matches = re.findall(pattern, line)
+
                     if len(matches) >= 8:
                         try:
                             data_dict = {
@@ -91,6 +121,7 @@ def process_client(conn, addr):
                             }
 
                             valid, error_msg = validar_linha_server(data_dict)
+
                             if valid:
                                 with csv_lock:
                                     csv_writer.writerow([
@@ -107,22 +138,27 @@ def process_client(conn, addr):
                                     csvfile.flush()
 
                                 print(f"[VALIDO] {addr} → {data_dict}")
+
                             else:
-                                msg = f"{line.strip()} — {error_msg}\n"
+                                msg = f"{line} — {error_msg}\n"
                                 print(f"[ERRO de validação] {addr}: {msg.strip()}")
+
                                 with log_lock:
                                     errfile.write(msg)
                                     errfile.flush()
 
                         except Exception as e:
-                            msg = f"{line.strip()} — {e}\n"
+                            msg = f"{line} — {e}\n"
                             print(f"[ERRO ao converter dados] {addr}: {msg.strip()}")
+
                             with log_lock:
                                 errfile.write(msg)
                                 errfile.flush()
+
                     else:
-                        msg = f"{line.strip()} — Campos insuficientes\n"
-                        print(f"[ERRO] Pacote inválido {addr}: {line.strip()}")
+                        msg = f"{line} — Campos insuficientes\n"
+                        print(f"[ERRO] Pacote inválido {addr}: {line}")
+
                         with log_lock:
                             errfile.write(msg)
                             errfile.flush()
@@ -132,9 +168,35 @@ def process_client(conn, addr):
                 break
 
     print(f"[-] Conexão encerrada: {addr}")
+    for device, c in list(device_conn.items()):
+        if c == conn:
+            last_heartbeat.pop(device, None)
+            device_conn.pop(device, None)
 
+def monitor_heartbeat():
+    while True:
+        now = time.time()
+
+        for device, last_time in list(last_heartbeat.items()):
+            if now - last_time > HEARTBEAT_TIMEOUT:
+                print(f"[TIMEOUT] {device} desconectado!")
+
+                conn = device_conn.get(device)
+
+                if conn:
+                    try:
+                        conn.close()
+                    except:
+                        pass
+
+                last_heartbeat.pop(device, None)
+                device_conn.pop(device, None)
+
+        time.sleep(1)
 
 print(f"[*] Aguardando conexões na porta {PORT}...")
+
+threading.Thread(target=monitor_heartbeat, daemon=True).start()
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

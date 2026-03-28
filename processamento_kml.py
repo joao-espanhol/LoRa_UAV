@@ -6,7 +6,7 @@ import pandas as pd
 # Estrutura: cada device → lista de posições [(lat, lon, tempo), ...]
 dispositivos = {}
 
-def salvar_kml(dispositivos, arquivo="posicoes.kml"):
+def salvar_kml(dispositivos, arquivo="t28MAR_00.kml"):
     with open(arquivo, "w") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         f.write('<kml xmlns="http://www.opengis.net/kml/2.2">\n')
@@ -41,7 +41,7 @@ def salvar_kml(dispositivos, arquivo="posicoes.kml"):
         f.write("</kml>\n")
 
 # CSV de entrada
-arquivo_csv = "OPAN.csv"
+arquivo_csv = "t28MAR_00.csv"
 offset = 0
 
 # Define nomes de colunas manualmente
