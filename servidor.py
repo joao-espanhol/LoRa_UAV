@@ -10,18 +10,18 @@ device_conn = {}      # device -> socket
 HEARTBEAT_TIMEOUT = 10  # segundos
 
 HOST = '0.0.0.0'
-PORT = 8001
+PORT = 5001
 
 # Locks para evitar escrita simultânea corromper arquivos
 csv_lock = threading.Lock()
 log_lock = threading.Lock()
 
 # abrir arquivo CSV em modo append
-csvfile = open("t28MAR_00.csv", "a", newline='')
+csvfile = open("t02ABR_00.csv", "a", newline='')
 csv_writer = csv.writer(csvfile)
 
 # abrir o log de erros
-errfile = open("e28MAR_00.log", "a")
+errfile = open("e02ABR_00.log", "a")
 
 # --- Limites geográficos e dispositivo esperado ---
 LAT_MIN, LAT_MAX = -25.5, -19.5

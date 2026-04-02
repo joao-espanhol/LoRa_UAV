@@ -14,12 +14,12 @@ SSD1306Wire display(0x3c, SDA_OLED, SCL_OLED);
 // #define GPS_RX   32
 // #define GPS_TX   33
 
-#define RECEPTOR_ID "SOLO"
+#define RECEPTOR_ID "DRONE"
 
-const char* ssid = "AVM PAULISTA-2.4G"; // Colocar ssid da Rede WiFi
-const char* password = "*XXXXXXXXXX"; // Colocar Senha da Rede WiFi
-const char* server_ip = "192.168.XXX.XXX"; // Colocar IP do Computador
-const uint16_t server_port = 8001;
+const char* ssid = "archweb"; // Colocar ssid da Rede WiFi
+const char* password = "pixo1234"; // Colocar Senha da Rede WiFi
+const char* server_ip = "192.168.15.4"; // Colocar IP do Computador
+const uint16_t server_port = 5001;
 
 // TinyGPSPlus gps;
 // HardwareSerial GPSserial(2);
@@ -154,7 +154,7 @@ void sendTCP(const String& msg, const int rssi) {
 }
 
 void sendHeartBeat(){
-  String heartBeat = "HEARTBEAT_SOLO";
+  String heartBeat = "HEARTBEAT_DRONE";
   client.println(heartBeat);  
 }
 
