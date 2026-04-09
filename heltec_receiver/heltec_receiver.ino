@@ -16,9 +16,9 @@ SSD1306Wire display(0x3c, SDA_OLED, SCL_OLED);
 
 #define RECEPTOR_ID "DRONE"
 
-const char* ssid = "archweb"; // Colocar ssid da Rede WiFi
-const char* password = "pixo1234"; // Colocar Senha da Rede WiFi
-const char* server_ip = "192.168.15.4"; // Colocar IP do Computador
+const char* ssid = "SUA_REDE"; // Colocar ssid da Rede WiFi
+const char* password = "SUA_SENHA"; // Colocar Senha da Rede WiFi
+const char* server_ip = "192.168.XX.XX"; // Colocar IP do Computador
 const uint16_t server_port = 5001;
 
 // TinyGPSPlus gps;
